@@ -38,6 +38,7 @@ where
     Ok(result)
 }
 
+#[allow(unused)]
 async fn execute<C: GenericClient>(
     client: &C,
     sql: &str,

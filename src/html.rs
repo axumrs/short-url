@@ -4,7 +4,15 @@ use crate::model::Url;
 
 #[derive(Template)]
 #[template(path = "index.html")]
-pub struct IndexTemplate {}
+pub struct IndexTemplate {
+    pub id: Option<String>,
+    pub short_url_domain: String,
+}
+impl IndexTemplate {
+    pub fn id(&self) -> String {
+        self.id.clone().unwrap_or("".to_string())
+    }
+}
 
 #[derive(Template)]
 #[template(path = "rank.html")]
@@ -29,11 +37,8 @@ impl MsgTemplate {
             target_url,
         }
     }
-    pub fn ok(msg: &str, target_url: &str) -> Self {
-        Self::new(true, msg.to_string(), Some(target_url.to_string()))
-    }
-    pub fn err(msg: &str) -> Self {
-        Self::new(false, msg.to_string(), None)
+    pub fn err(msg: String) -> Self {
+        Self::new(false, msg, None)
     }
     pub fn target_url(&self) -> String {
         match self.target_url.clone() {

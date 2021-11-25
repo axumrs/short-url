@@ -1,7 +1,6 @@
 use tokio_postgres::Client;
 
 use crate::{
-    error::AppError,
     form,
     model::{Url, UrlID, UrlTarget},
     Result,

@@ -13,6 +13,7 @@ pub enum AppErrorType {
     DbError,
     NotFound,
     TemplateError,
+    ReservedWord,
 }
 
 #[derive(Debug)]
@@ -57,6 +58,10 @@ impl AppError {
             _ => false,
         }
     }
+    pub fn reserved_word(word: &str) -> Self {
+        let msg = format!("{}是保留字", word);
+        Self::from_str(&msg, AppErrorType::ReservedWord)
+    }
 }
 
 impl std::error::Error for AppError {}
@@ -89,11 +94,7 @@ impl IntoResponse for AppError {
     type BodyError = Infallible;
     fn into_response(self) -> axum::http::Response<Self::Body> {
         let msg = self.message.unwrap_or("有错误发生".to_string());
-        let tmpl = MsgTemplate {
-            is_ok: false,
-            msg: msg.clone(),
-            target_url: None,
-        };
+        let tmpl = MsgTemplate::err(msg.clone());
         let html = tmpl.render().unwrap_or(msg);
         Html(html).into_response()
     }

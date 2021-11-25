@@ -60,23 +60,33 @@ pub async fn index_action(
     Form(cu): Form<form::CreateUrl>,
 ) -> HandlerRedirectResult {
     let id = core::short_url(&cu.url);
+    if (&state).short_url_cfg.in_reserved_words(&id) {
+        return Err(AppError::reserved_word(&id));
+    };
     let handler_name = "index_action";
     let client = get_client(&state, handler_name).await?;
     let result = db::create(&client, cu, id)
         .await
         .map_err(log_error(handler_name.to_string()))?;
-    let msg = MsgArgs {
-        ok: Some(format!("添加成功，短网址是：{}", result.id)),
-        err: None,
-        target: Some("/".to_string()),
-    };
-    Ok(redirect_with_msg("/msg", Some(&msg)))
+    let redirect_url = format!("/?id={}", result.id);
+    Ok(redirect(&redirect_url))
+}
+
+#[derive(Deserialize)]
+pub struct IndexArgs {
+    pub id: Option<String>,
 }
 
 /// 首页
-pub async fn index() -> HandlerHtmlResult {
+pub async fn index(
+    Extension(state): Extension<AppState>,
+    Query(args): Query<IndexArgs>,
+) -> HandlerHtmlResult {
     let handler_name = "index";
-    let tmpl = IndexTemplate {};
+    let tmpl = IndexTemplate {
+        id: args.id.clone(),
+        short_url_domain: state.short_url_cfg.domain.clone(),
+    };
     render(tmpl).map_err(log_error(handler_name.to_string()))
 }
 

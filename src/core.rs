@@ -8,6 +8,7 @@ fn get_hash(url: &str) -> u32 {
 }
 
 /// 通过指定的种子获取URL的哈希值
+#[allow(unused)]
 fn get_hash_with_seed(url: &str, seed: u32) -> u32 {
     murmur3::hash32_with_seed(url.as_bytes(), seed)
 }
@@ -34,6 +35,7 @@ pub fn short_url(url: &str) -> String {
 }
 
 /// 通过指定的种子获取URL对应的短链接
+#[allow(unused)]
 pub fn short_url_with_seed(url: &str, seed: u32) -> String {
     let hash = get_hash_with_seed(url, seed);
     u32_to_62(hash)
