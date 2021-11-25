@@ -8,7 +8,7 @@ use deadpool_postgres::Client;
 use serde::Deserialize;
 
 use crate::{
-    db,
+    core, db,
     error::AppError,
     form,
     html::{IndexTemplate, MsgTemplate, RankTemplate},
@@ -59,9 +59,10 @@ pub async fn index_action(
     Extension(state): Extension<AppState>,
     Form(cu): Form<form::CreateUrl>,
 ) -> HandlerRedirectResult {
+    let id = core::short_url(&cu.url);
     let handler_name = "index_action";
     let client = get_client(&state, handler_name).await?;
-    let result = db::create(&client, cu)
+    let result = db::create(&client, cu, id)
         .await
         .map_err(log_error(handler_name.to_string()))?;
     let msg = MsgArgs {

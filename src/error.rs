@@ -51,6 +51,12 @@ impl AppError {
     pub fn tmpl_error_from_str(msg: &str) -> Self {
         Self::from_str(msg, AppErrorType::TemplateError)
     }
+    pub fn is_not_found(&self) -> bool {
+        match self.error_type {
+            AppErrorType::NotFound => true,
+            _ => false,
+        }
+    }
 }
 
 impl std::error::Error for AppError {}
