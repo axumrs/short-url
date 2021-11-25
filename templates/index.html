@@ -2,8 +2,16 @@
 {%block content%}
 <main class="p-3">
     <h1>创建你的短网址</h1>
-    <form>
-        
+    <form action="/" method="post" autocomplete="off">
+        <div class="mb-3">
+            <label for="url" class="form-label">网址：</label>
+            <input type="url" class="form-control" id="url" name="url" placeholder="输入你要缩短的网址" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">邮箱：</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="输入你的邮箱" required>
+        </div>
+        <button type="submit" class="btn btn-primary">提交</button>
     </form>
   </main>
 {%endblock%}
