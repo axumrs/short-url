@@ -1,6 +1,7 @@
 use tokio_postgres::Client;
 
 use crate::{
+    error::AppError,
     form,
     model::{Url, UrlID, UrlTarget},
     Result,
@@ -26,8 +27,14 @@ pub async fn create(client: &Client, cu: form::CreateUrl, id: String) -> Result<
     Ok(result)
 }
 
-pub async fn goto_url(client: &mut Client, id: String) -> Result<UrlTarget> {
-    unimplemented!()
+pub async fn goto_url(client: &Client, id: String) -> Result<UrlTarget> {
+    let result = super::query_one(
+        client,
+        "UPDATE url SET visit=visit+1 WHERE id=$1 RETURNING url",
+        &[&id],
+    )
+    .await?;
+    Ok(result)
 }
 
 pub async fn rank(client: &Client) -> Result<Vec<Url>> {

@@ -86,8 +86,8 @@ pub async fn goto_url(
     Path(id): Path<String>,
 ) -> HandlerRedirectResult {
     let handler_name = "goto_url";
-    let mut client = get_client(&state, handler_name).await?;
-    let result = db::goto_url(&mut client, id)
+    let client = get_client(&state, handler_name).await?;
+    let result = db::goto_url(&client, id)
         .await
         .map_err(log_error(handler_name.to_string()))?;
     Ok(redirect(result.url.as_str()))
