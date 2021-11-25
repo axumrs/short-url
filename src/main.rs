@@ -53,7 +53,10 @@ async fn main() {
                 )
             }),
         )
-        .layer(AddExtensionLayer::new(AppState { pool }));
+        .layer(AddExtensionLayer::new(AppState {
+            pool,
+            short_url_cfg: cfg.short_url.clone(),
+        }));
 
     tracing::info!("服务器监听于：{}", &cfg.web.addr);
 

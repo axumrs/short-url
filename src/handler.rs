@@ -100,7 +100,10 @@ pub async fn rank(Extension(state): Extension<AppState>) -> HandlerHtmlResult {
     let result = db::rank(&client)
         .await
         .map_err(log_error(handler_name.to_string()))?;
-    let tmpl = RankTemplate { urls: result };
+    let tmpl = RankTemplate {
+        urls: result,
+        short_url_domain: state.short_url_cfg.domain.clone(),
+    };
     render(tmpl).map_err(log_error(handler_name.to_string()))
 }
 

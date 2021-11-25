@@ -8,17 +8,17 @@ pub struct WebConfig {
     pub addr: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct ShortUrlConfig {
-    pub reserved_words:String,
-    pub domain:String,
+    pub reserved_words: String,
+    pub domain: String,
 }
 
 impl ShortUrlConfig {
     pub fn reserved_words(&self) -> Vec<&str> {
         self.reserved_words.split(',').collect()
     }
-    pub fn in_reserved_words(&self, word:&str) -> bool {
+    pub fn in_reserved_words(&self, word: &str) -> bool {
         for w in self.reserved_words() {
             if w == word {
                 return true;
@@ -33,7 +33,7 @@ impl ShortUrlConfig {
 pub struct Config {
     pub web: WebConfig,
     pub pg: deadpool_postgres::Config,
-    pub short_url:ShortUrlConfig,
+    pub short_url: ShortUrlConfig,
 }
 
 impl Config {

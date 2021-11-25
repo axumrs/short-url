@@ -1,11 +1,14 @@
 use serde::Serialize;
 use tokio_pg_mapper_derive::PostgresMapper;
 
+use crate::config;
+
 /// 应用状态共享
 #[derive(Clone)]
 pub struct AppState {
     /// PostgreSQL 连接池
     pub pool: deadpool_postgres::Pool,
+    pub short_url_cfg: config::ShortUrlConfig,
 }
 
 #[derive(PostgresMapper, Serialize)]

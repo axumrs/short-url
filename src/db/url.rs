@@ -38,5 +38,6 @@ pub async fn goto_url(client: &Client, id: String) -> Result<UrlTarget> {
 }
 
 pub async fn rank(client: &Client) -> Result<Vec<Url>> {
-    unimplemented!()
+    let result = super::query(client, "SELECT id, url,email,visit,is_del FROM url WHERE  is_del=false ORDER BY visit DESC LIMIT 100", &[]).await?;
+    Ok(result)
 }

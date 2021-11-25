@@ -10,6 +10,7 @@ pub struct IndexTemplate {}
 #[template(path = "rank.html")]
 pub struct RankTemplate {
     pub urls: Vec<Url>,
+    pub short_url_domain: String,
 }
 
 #[derive(Template)]
