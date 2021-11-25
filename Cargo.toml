@@ -10,3 +10,4 @@ homepage = "https://axum.rs"
 description = "axum.rs专题《使用AXUM构建短链接服务》"
 
 [dependencies]
+fasthash = "0.4"
